@@ -7,7 +7,7 @@ import userRouter from './user/userRouter';
 
 
 const app=express();
-
+app.use(express.json());// middle ware used for json parsing in express 
  
 
 //routes 
