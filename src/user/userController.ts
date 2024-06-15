@@ -2,7 +2,8 @@ import { NextFunction ,Request,Response} from "express";
 import { Express } from "express";
 import createHttpError from "http-errors";
 import userModel from "./userModel"
-
+import bcrypt from 'bcrypt';
+ 
 const createUser = async(req:Request,res:Response,next:NextFunction)=>
     {
 
@@ -11,7 +12,7 @@ const createUser = async(req:Request,res:Response,next:NextFunction)=>
         // process 
         // response 
 
-      //validation.........................................
+      // 1-validation.........................................
       // Note we can use express validator library for complex validation  
       
       const {name,email,password}=req.body;
@@ -37,6 +38,13 @@ if(user){
     const error=createHttpError(400,"User Already exist with this email")
     return next(error)
 }      
+//store data in database and for password we will hash 
+//using bcrypt we will hash the password and store 
+
+
+// salt random string which we mix for hasing 
+const hashedPassword=await bcrypt.hash(password,10);
+
 
 
 
