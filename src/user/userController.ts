@@ -3,6 +3,8 @@ import { Express } from "express";
 import createHttpError from "http-errors";
 import userModel from "./userModel"
 import bcrypt from 'bcrypt';
+import {sign } from "jsonwebtoken";
+import { config } from '../config/config';
  
 const createUser = async(req:Request,res:Response,next:NextFunction)=>
     {
@@ -45,11 +47,18 @@ if(user){
 // salt random string which we mix for hasing 
 const hashedPassword=await bcrypt.hash(password,10);
 
+const newUser=await userModel.create({
+    name,
+    email,
+    password:hashedPassword,
+});
+// Token generation JWT
+
+const token = sign({sub:newUser._id},config.jwtSecret as string,{expiresIn:'7d'});
 
 
-
-
-        res.json({message:"User created"});
+//Response
+        res.json({accessToken:token});
     }
   
 
