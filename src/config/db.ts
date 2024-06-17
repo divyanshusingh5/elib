@@ -3,6 +3,7 @@ import { config  } from "./config";
 // we will  create arrow asyn function to give connection string - Database url
 
 const connectDB=async()=>
+    
     {
 
         try
